@@ -2,7 +2,7 @@
 {
     public enum GameState
     {
-        // game is continue
+        // game is continuing
         Active,
 
         // game is over, we win
