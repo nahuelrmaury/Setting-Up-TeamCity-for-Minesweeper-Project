@@ -1,7 +1,8 @@
 ﻿using Minesweeper.Core;
 using Minesweeper.Core.Enums;
+using Minesweeper.Core.Models;
 
-var dict = new Dictionary<PointState, char>() 
+var consoleSymbolByPointState = new Dictionary<PointState, char>()
 {
     [PointState.Close] = 'D',
     [PointState.Mine] = '*',
@@ -16,9 +17,12 @@ var dict = new Dictionary<PointState, char>()
     [PointState.Neighbors8] = '8',
 };
 
-var randomizer = new FieldGenerator();
+Console.WriteLine("Choose difficulty level (Begginer|Intermediate|Expert):");
 
-var field = randomizer.GetRandomField(9, 9, 10);
+DifficultyLevel difficultyLevel = Enum.Parse<DifficultyLevel>(Console.ReadLine());
+GameSettings settings = DifficultyManager.GetGameSettingsByDifficultylevel(difficultyLevel);
+
+var field = FieldGenerator.GetRandomField(settings.Width, settings.Height, settings.Mines);
 
 var gameProcessor = new GameProcessor(field);
 
@@ -28,30 +32,43 @@ Print(currentField);
 
 while (gameProcessor.GameState == GameState.Active)
 {
-    Console.WriteLine("Enter coordinates");
-
+    Console.WriteLine("Enter coordinate X");
     var x = int.Parse(Console.ReadLine());
+
+    Console.WriteLine("Enter coordinate Y");
     var y = int.Parse(Console.ReadLine());
 
-    var currentState = gameProcessor.Open(x, y);
+    gameProcessor.Open(x, y);
     currentField = gameProcessor.GetCurrentField();
-    Console.Clear();
+    //Console.Clear();
     Print(currentField);
 }
 
-Console.WriteLine(gameProcessor.GameState ==  GameState.Lose ? "GAME IS OVER" : "YOU WIN!");
+Console.WriteLine(gameProcessor.GameState == GameState.Lose ? "GAME IS OVER" : "YOU WIN!");
 
 Console.ReadKey();
 
 void Print(PointState[,] field)
 {
-    for (var row = 0; row < field.GetLength(0); row++)
+    Console.Clear();
+
+    for (var row = field.GetLength(0) - 1; row >= 0; row--)
     {
+        Console.Write($"{row} ");
         for (var column = 0; column < field.GetLength(1); column++)
         {
-            Console.Write(dict[field[row, column]]);
+            Console.Write(consoleSymbolByPointState[field[row, column]]);
         }
 
         Console.WriteLine();
     }
+
+    Console.Write("  ");
+
+    for (var column = 0; column < field.GetLength(1); column++)
+    {
+        Console.Write(column);
+    }
+
+    Console.WriteLine();
 }

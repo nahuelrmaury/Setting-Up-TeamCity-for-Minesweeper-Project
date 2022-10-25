@@ -1,8 +1,8 @@
 ﻿namespace Minesweeper.Core
 {
-    public class FieldGenerator
+    public static class FieldGenerator
     {
-        public bool[,] GetRandomField(int sizeX, int sizeY, int mineCount)
+        public static bool[,] GetRandomField(int sizeX, int sizeY, int mineCount)
         {
             var list = Enumerable.Range(0, sizeX * sizeY);
 

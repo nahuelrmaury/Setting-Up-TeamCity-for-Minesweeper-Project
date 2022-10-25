@@ -5,7 +5,7 @@ namespace Minesweeper.Core
 {
     public class GameProcessor
     {
-        private Point[,] _field;
+        private readonly Point[,] _field;
         public GameState GameState { get; private set; } = GameState.Active;
         private readonly int mineCount;
         private readonly int totalCount;
@@ -31,7 +31,10 @@ namespace Minesweeper.Core
 
         public GameState Open(int x, int y)
         {
-            var targetCell = _field[x, y];
+            if (GameState != GameState.Active)
+                throw new InvalidOperationException($"Game status is {GameState}");
+
+            var targetCell = _field[y, x];
 
             if (targetCell.IsOpen)
                 return GameState;
