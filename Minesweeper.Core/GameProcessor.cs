@@ -60,6 +60,17 @@ namespace Minesweeper.Core
                     }
                 }
 
+                if (targetCell.MineNeighborsCount == 0)
+                {
+                    for (var row = Math.Max(0, y - 1); row <= Math.Min(_field.GetLength(0) - 1, y + 1); row++)
+                    {
+                        for (var column = Math.Max(0, x - 1); column <= Math.Min(_field.GetLength(1) - 1, x + 1); column++)
+                        {
+                            Open(column, row);
+                        }
+                    }
+                }
+
                 openCount++;
 
                 if (openCount + mineCount == totalCount)
