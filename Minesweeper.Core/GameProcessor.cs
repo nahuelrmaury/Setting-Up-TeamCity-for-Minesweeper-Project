@@ -1,4 +1,5 @@
 ﻿using Minesweeper.Core.Enums;
+using Minesweeper.Core.Models;
 
 namespace Minesweeper.Core
 {
@@ -31,6 +32,10 @@ namespace Minesweeper.Core
         public GameState Open(int x, int y)
         {
             var targetCell = _field[x, y];
+
+            if (targetCell.IsOpen)
+                return GameState;
+
             targetCell.IsOpen = true;
 
             if (targetCell.IsMine)
@@ -39,16 +44,15 @@ namespace Minesweeper.Core
             }
             else
             {
-                int mineNeighborsCount = 0;
-
-                for (var row = y - 1; row <= y + 1; row++)
+                for (var row = Math.Max(0, y - 1); row <= Math.Min(_field.GetLength(0) - 1, y + 1); row++)
                 {
-                    for (var column = x - 1; row <= x + 1; column++)
+                    for (var column = Math.Max(0, x - 1); column <= Math.Min(_field.GetLength(1) - 1, x + 1); column++)
                     {
                         Point neighbor = _field[row, column];
+
                         if (neighbor.IsMine)
                         {
-                            mineNeighborsCount++;
+                            targetCell.MineNeighborsCount++;
                         }
                     }
                 }
@@ -80,9 +84,9 @@ namespace Minesweeper.Core
                 {
                     var targetCell = _field[row, column];
 
-                    if (!targetCell.IsOpen)
+                    if (!targetCell.IsOpen && GameState == GameState.Active)
                         publicFieldInfo[row, column] = PointState.Close;
-                    else if (targetCell.IsFlag)
+                    else if (targetCell.IsFlag && GameState == GameState.Active)
                         publicFieldInfo[row, column] = PointState.Flag;
                     else if (targetCell.IsMine)
                         publicFieldInfo[row, column] = PointState.Mine;
@@ -93,16 +97,5 @@ namespace Minesweeper.Core
 
             return publicFieldInfo;
         }
-    }
-
-    public class Point
-    {
-        public bool IsMine { get; set; }
-
-        public bool IsOpen { get; set; }
-
-        public int MineNeighborsCount { get; set; }
-
-        public bool IsFlag { get; set; }
     }
 }

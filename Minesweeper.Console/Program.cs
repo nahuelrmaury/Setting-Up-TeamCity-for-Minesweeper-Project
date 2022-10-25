@@ -19,11 +19,12 @@ var dict = new Dictionary<PointState, char>()
 
 var randomizer = new FieldGenerator();
 
-var field = randomizer.GetRandomField(3, 2, 2);
+var field = randomizer.GetRandomField(9, 9, 10);
 
 var gameProcessor = new GameProcessor(field);
 
 var currentField = gameProcessor.GetCurrentField();
+
 Print(currentField);
 
 while (gameProcessor.GameState == GameState.Active)
@@ -35,9 +36,11 @@ while (gameProcessor.GameState == GameState.Active)
 
     var currentState = gameProcessor.Open(x, y);
     currentField = gameProcessor.GetCurrentField();
-
+    Console.Clear();
     Print(currentField);
 }
+
+Console.WriteLine(gameProcessor.GameState ==  GameState.Lose ? "GAME IS OVER" : "YOU WIN!");
 
 Console.ReadKey();
 
@@ -45,11 +48,11 @@ void Print(PointState[,] field)
 {
     for (var row = 0; row < field.GetLength(0); row++)
     {
-        Console.WriteLine();
-
         for (var column = 0; column < field.GetLength(1); column++)
         {
             Console.Write(dict[field[row, column]]);
         }
+
+        Console.WriteLine();
     }
 }
