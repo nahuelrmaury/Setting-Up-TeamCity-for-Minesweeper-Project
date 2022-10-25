@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Minesweeper.Core.Enums;
 
-namespace Minesweeper.Console
+namespace Minesweeper.Core
 {
-    internal class GameProcessor
+    public class GameProcessor
     {
         private Point[,] _field;
-        private GameState _gameState = GameState.Active;
+        public GameState GameState { get; private set; } = GameState.Active;
         private readonly int mineCount;
         private readonly int totalCount;
         private int openCount;
 
-        internal GameProcessor(bool[,] boolField)
+        public GameProcessor(bool[,] boolField)
         {
             _field = new Point[boolField.GetLength(0), boolField.GetLength(1)];
 
             for (var row = 0; row < boolField.GetLength(0); row++)
             {
-                for (var column = 0; row < boolField.GetLength(1); column++)
+                for (var column = 0; column < boolField.GetLength(1); column++)
                 {
                     bool isMine = boolField[row, column];
 
@@ -39,7 +35,7 @@ namespace Minesweeper.Console
 
             if (targetCell.IsMine)
             {
-                _gameState = GameState.Lose;
+                GameState = GameState.Lose;
             }
             else
             {
@@ -61,11 +57,11 @@ namespace Minesweeper.Console
 
                 if (openCount + mineCount == totalCount)
                 {
-                    _gameState = GameState.Win;
+                    GameState = GameState.Win;
                 }
             }
 
-            return _gameState;
+            return GameState;
         }
 
         public void SetFlag(int x, int y)
@@ -76,21 +72,27 @@ namespace Minesweeper.Console
 
         public PointState[,] GetCurrentField()
         {
+            var publicFieldInfo = new PointState[_field.GetLength(0), _field.GetLength(1)];
 
+            for (var row = 0; row < _field.GetLength(0); row++)
+            {
+                for (var column = 0; column < _field.GetLength(1); column++)
+                {
+                    var targetCell = _field[row, column];
+
+                    if (!targetCell.IsOpen)
+                        publicFieldInfo[row, column] = PointState.Close;
+                    else if (targetCell.IsFlag)
+                        publicFieldInfo[row, column] = PointState.Flag;
+                    else if (targetCell.IsMine)
+                        publicFieldInfo[row, column] = PointState.Mine;
+                    else
+                        publicFieldInfo[row, column] = (PointState)targetCell.MineNeighborsCount;
+                }
+            }
+
+            return publicFieldInfo;
         }
-
-        //public void GenerateField()
-        //{
-        //    _field = new Point[_sizeX, _sizeY];
-
-        //    for(var row = 0; row < _sizeX; row++)
-        //    {
-        //        for (var column = 0; row < _sizeX; column++)
-        //        {
-
-        //        }
-        //    }
-        //}
     }
 
     public class Point
@@ -102,27 +104,5 @@ namespace Minesweeper.Console
         public int MineNeighborsCount { get; set; }
 
         public bool IsFlag { get; set; }
-    }
-
-    public enum GameState
-    {
-        Active,
-        Lose,
-        Win
-    }
-
-    public enum PointState
-    {
-        Close,
-        Flag,
-        Neighbors0,
-        Neighbors1,
-        Neighbors2,
-        Neighbors3,
-        Neighbors4,
-        Neighbors5,
-        Neighbors6,
-        Neighbors7,
-        Neighbors8,
     }
 }
