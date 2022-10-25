@@ -68,12 +68,6 @@ namespace Minesweeper.Core
             return GameState;
         }
 
-        public void SetFlag(int x, int y)
-        {
-            var targetRow = _field[x, y];
-            targetRow.IsFlag = !targetRow.IsFlag;
-        }
-
         public PointState[,] GetCurrentField()
         {
             var publicFieldInfo = new PointState[_field.GetLength(0), _field.GetLength(1)];
@@ -86,8 +80,6 @@ namespace Minesweeper.Core
 
                     if (!targetCell.IsOpen && GameState == GameState.Active)
                         publicFieldInfo[row, column] = PointState.Close;
-                    else if (targetCell.IsFlag && GameState == GameState.Active)
-                        publicFieldInfo[row, column] = PointState.Flag;
                     else if (targetCell.IsMine)
                         publicFieldInfo[row, column] = PointState.Mine;
                     else

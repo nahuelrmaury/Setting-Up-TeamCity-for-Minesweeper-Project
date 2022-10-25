@@ -4,7 +4,6 @@ using Minesweeper.Core.Enums;
 var dict = new Dictionary<PointState, char>() 
 {
     [PointState.Close] = 'D',
-    [PointState.Flag] = 'F',
     [PointState.Mine] = '*',
     [PointState.Neighbors0] = '-',
     [PointState.Neighbors1] = '1',

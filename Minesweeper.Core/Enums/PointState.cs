@@ -12,7 +12,6 @@
         Neighbors7,
         Neighbors8,
         Close,
-        Flag,
         Mine
     }
 }
