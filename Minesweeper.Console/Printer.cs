@@ -5,19 +5,19 @@ namespace Minesweeper.Console
 {
     internal static class Printer
     {
-        private static Dictionary<PointState, char> _consoleSymbolByPointState = new Dictionary<PointState, char>()
+        private static Dictionary<PointState, string> _consoleSymbolByPointState = new Dictionary<PointState, string>()
         {
-            [PointState.Close] = 'D',
-            [PointState.Mine] = '*',
-            [PointState.Neighbors0] = '-',
-            [PointState.Neighbors1] = '1',
-            [PointState.Neighbors2] = '2',
-            [PointState.Neighbors3] = '3',
-            [PointState.Neighbors4] = '4',
-            [PointState.Neighbors5] = '5',
-            [PointState.Neighbors6] = '6',
-            [PointState.Neighbors7] = '7',
-            [PointState.Neighbors8] = '8',
+            [PointState.Close] = "D  ",
+            [PointState.Mine] = "*  ",
+            [PointState.Neighbors0] = "-  ",
+            [PointState.Neighbors1] = "1  ",
+            [PointState.Neighbors2] = "2  ",
+            [PointState.Neighbors3] = "3  ",
+            [PointState.Neighbors4] = "4  ",
+            [PointState.Neighbors5] = "5  ",
+            [PointState.Neighbors6] = "6  ",
+            [PointState.Neighbors7] = "7  ",
+            [PointState.Neighbors8] = "8  ",
         };
 
         internal static DifficultyLevel ChooseDifficultyLevel()
@@ -46,7 +46,7 @@ namespace Minesweeper.Console
 
             for (var row = field.GetLength(0) - 1; row >= 0; row--)
             {
-                System.Console.Write($"{row} ");
+                System.Console.Write($"{row.ToString("D2")} ");
                 for (var column = 0; column < field.GetLength(1); column++)
                 {
                     System.Console.Write(_consoleSymbolByPointState[field[row, column]]);
@@ -55,11 +55,11 @@ namespace Minesweeper.Console
                 System.Console.WriteLine();
             }
 
-            System.Console.Write("  ");
+            System.Console.Write("   ");
 
             for (var column = 0; column < field.GetLength(1); column++)
             {
-                System.Console.Write(column);
+                System.Console.Write($"{column.ToString("D2")} ");
             }
 
             System.Console.WriteLine();
