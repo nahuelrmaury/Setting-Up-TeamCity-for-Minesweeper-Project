@@ -20,6 +20,7 @@
                 result[row, col] = true;
             }
 
+
             return result;
         }
     }
