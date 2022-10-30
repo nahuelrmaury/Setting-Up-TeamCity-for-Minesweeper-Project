@@ -21,8 +21,8 @@ namespace Minesweeper.Core
                 {
                     bool isMine = boolField[row, column];
 
-                    _field[row, column] = new Point {IsMine = isMine };
-                    mineCount = mineCount + (isMine ? 1: 0);
+                    _field[row, column] = new Point { IsMine = isMine };
+                    mineCount = mineCount + (isMine ? 1 : 0);
                 }
             }
 
@@ -102,6 +102,7 @@ namespace Minesweeper.Core
             }
 
             return publicFieldInfo;
+
         }
     }
 }
