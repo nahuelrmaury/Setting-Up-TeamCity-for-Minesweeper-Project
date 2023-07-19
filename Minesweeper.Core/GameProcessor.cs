@@ -11,6 +11,7 @@ namespace Minesweeper.Core
         private readonly int totalCount;
         private int openCount;
 
+        /**/
         public GameProcessor(bool[,] boolField)
         {
             _field = new Point[boolField.GetLength(0), boolField.GetLength(1)];
